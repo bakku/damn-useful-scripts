@@ -17,7 +17,7 @@ $ pj '{"this_json_is":"ugly"}'
 
 ### gpass
 
-Password generator (because rake/rails secret is slow)
+Password generator (because rake/rails secret is slow and I don't want to leave the terminal for [http://passwordsgenerator.net/](http://passwordsgenerator.net/))
 
 ```
 $ gpass 32
