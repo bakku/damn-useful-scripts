@@ -1,0 +1,2 @@
+#!/bin/bash
+ruby -e "require 'json'; puts JSON.pretty_generate(JSON.parse(ARGV.first))" $1
