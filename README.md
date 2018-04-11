@@ -9,7 +9,7 @@ Commandline JSON prettifier
 ```
 $ pj '{"this_json_is":"ugly"}'
 {
-  "ugly": "json"
+  "this_json_is": "ugly"
 }
 ```
 
