@@ -1,0 +1,2 @@
+#!/bin/bash
+ruby -e "puts (1..ARGV.first.to_i).to_a.reduce(Array.new) { |a| a << ('A'..'Z').to_a.concat(('0'..'9').to_a).concat(('a'..'z').to_a).sample }.join" $1
