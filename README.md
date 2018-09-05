@@ -2,7 +2,11 @@
 
 Just a list of scripts that grants a dev (like me) a happier life.
 
-Coding guidelines: Try to make code in one line and as complex as possible.
+Coding guidelines:
+
+- Must be one-liners
+- As complex as possible
+- No mutable variables, only combination of tools/method sequences
 
 ### pj
 
