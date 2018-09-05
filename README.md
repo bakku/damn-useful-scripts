@@ -24,6 +24,15 @@ $ gpass 32
 IBOLsHI96AhxdDldZETnTHWC8jnIdUkJ
 ```
 
+### objectid
+
+ObjectID generator in case you need them often for sample data
+
+```
+$ objectid
+5b8fb395a595f1824326425f
+```
+
 ## License
 
 Use them, change them, delete them. Do what you want with them !
