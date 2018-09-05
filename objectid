@@ -1,2 +1,2 @@
 #!/bin/bash
-mongo --quiet --eval "ObjectId()" | sed 's/ObjectId("//g' | sed 's/")//g'
+mongo --nodb --quiet --eval "ObjectId()" | sed 's/ObjectId("//g' | sed 's/")//g'
