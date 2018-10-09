@@ -37,6 +37,15 @@ $ objectid
 5b8fb395a595f1824326425f
 ```
 
+### lorem
+
+Generates a random paragraph using [https://baconipsum.com/json-api/](https://baconipsum.com/json-api/).
+
+```
+$ lorem
+Rump andouille shankle, minim corned beef picanha eu drumstick commodo quis in labore et. Shankle cow turkey velit pancetta chuck sirloin. Frankfurter kevin adipisicing, ball tip tail corned beef tenderloin jowl kielbasa bresaola brisket burgdoggen do incididunt. Cillum elit qui shoulder.
+```
+
 ## License
 
 Use them, change them, delete them. Do what you want with them !

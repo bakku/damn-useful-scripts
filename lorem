@@ -1,0 +1,2 @@
+#!/bin/bash
+ruby -e "require 'net/http';require 'json';puts JSON.parse(Net::HTTP.get(URI('https://baconipsum.com/api/?type=meat-and-filler&paras=1'))).first.gsub('  ', ' ')"
