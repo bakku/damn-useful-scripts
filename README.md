@@ -51,7 +51,7 @@ Rump andouille shankle, minim corned beef picanha eu drumstick commodo quis in l
 Want to try some clojure lib in a REPL session? Use `clj-try`:
 
 ```
-$ clj-try '[medley "1.3.0"]'
+$ clj-try medley "1.3.0"
 Downloading: medley/medley/1.3.0/medley-1.3.0.pom from clojars
 Downloading: medley/medley/1.3.0/medley-1.3.0.jar from clojars
 Clojure 1.10.1
