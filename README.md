@@ -46,6 +46,21 @@ $ lorem
 Rump andouille shankle, minim corned beef picanha eu drumstick commodo quis in labore et. Shankle cow turkey velit pancetta chuck sirloin. Frankfurter kevin adipisicing, ball tip tail corned beef tenderloin jowl kielbasa bresaola brisket burgdoggen do incididunt. Cillum elit qui shoulder.
 ```
 
+### clj-try
+
+Want to try some clojure lib in a REPL session? Use `clj-try`:
+
+```
+$ clj-try '[medley "1.3.0"]'
+Downloading: medley/medley/1.3.0/medley-1.3.0.pom from clojars
+Downloading: medley/medley/1.3.0/medley-1.3.0.jar from clojars
+Clojure 1.10.1
+user=> (require '[medley.core :as m])
+nil
+user=> (m/find-first even? [1 2 3 4])
+2
+```
+
 ## License
 
 Use them, change them, delete them. Do what you want with them !
