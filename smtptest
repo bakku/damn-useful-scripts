@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ruby -r mail -e "Mail.defaults { delivery_method :smtp, user_name: ARGV[1], password: ARGV[2], address: ARGV[0], port: 25, enable_ssl: false, openssl_verify_mode: 0 }; Mail.new { from ARGV[1]; to ARGV[3]; subject 'test'; body 'test'; }.deliver!" $1 $2 $3 $4

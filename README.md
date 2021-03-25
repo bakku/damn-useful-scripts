@@ -61,6 +61,25 @@ user=> (m/find-first even? [1 2 3 4])
 2
 ```
 
+### serve
+
+Start a file server and serve the current directory on port 9090 (requires WEBrick).
+
+```
+$ serve 
+[2021-03-25 14:42:35] INFO  WEBrick 1.7.0
+[2021-03-25 14:42:35] INFO  ruby 3.0.0 (2020-12-25) [x86_64-darwin20]
+[2021-03-25 14:42:35] INFO  WEBrick::HTTPServer#start: pid=63180 port=9090
+```
+
+### smtptest
+
+Check whether a smtp account works properly (requires mail gem).
+
+```
+$ smtptest mail.server.com sender@example.com password recipient@example.com
+```
+
 ## License
 
 Use them, change them, delete them. Do what you want with them !
