@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+  echo "usage: shrink <image> <percentage>"
+  exit -1
+fi
+
+convert $1 -resize "$2%" "shrinked_$1"
