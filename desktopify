@@ -1,0 +1,174 @@
+#!/usr/bin/env -S uv run --script
+
+import argparse
+import re
+import shutil
+import subprocess
+from pathlib import Path
+
+
+VALID_CATEGORIES = {
+    "AudioVideo",
+    "Audio",
+    "Video",
+    "Development",
+    "Education",
+    "Game",
+    "Graphics",
+    "Network",
+    "Office",
+    "Science",
+    "Settings",
+    "System",
+    "Utility",
+}
+
+
+def slugify_name(name: str) -> str:
+    slug = name.strip().lower()
+    slug = re.sub(r"[\s_]+", "-", slug)
+    slug = re.sub(r"[^a-z0-9\-]", "", slug)
+    slug = re.sub(r"-+", "-", slug)
+    return slug.strip("-") or "app"
+
+
+def parse_categories(raw: str) -> list[str]:
+    if not raw:
+        return []
+    # Accept comma or semicolon separated input; normalize and strip
+    parts = re.split(r"[;,]", raw)
+    categories = [p.strip() for p in parts if p.strip()]
+    return categories
+
+
+def validate_categories(categories: list[str]) -> list[str]:
+    invalid = [c for c in categories if c not in VALID_CATEGORIES]
+    if invalid:
+        raise SystemExit(
+            f"Invalid category/categories: {', '.join(invalid)}.\n"
+            f"Valid options include: {', '.join(sorted(VALID_CATEGORIES))}"
+        )
+
+    if categories and not any(c in VALID_CATEGORIES for c in categories):
+        raise SystemExit(
+            "At least one category is required: " + ", ".join(sorted(VALID_CATEGORIES))
+        )
+    return categories
+
+
+def ensure_svg_icon(icon_path: Path) -> None:
+    if not icon_path.exists():
+        raise SystemExit(f"Icon file not found: {icon_path}")
+    if icon_path.suffix.lower() != ".svg":
+        raise SystemExit("Icon must be an SVG file (.svg)")
+
+
+def install_icon(icon_src: Path, icon_name: str) -> Path:
+    icons_dir = Path.home() / ".local/share/icons/hicolor/scalable/apps"
+    icons_dir.mkdir(parents=True, exist_ok=True)
+    icon_dest = icons_dir / f"{icon_name}.svg"
+    shutil.copyfile(icon_src, icon_dest)
+    return icon_dest
+
+
+def write_desktop_entry(
+    desktop_file: Path,
+    name: str,
+    comment: str,
+    exec_cmd: str,
+    icon_name: str,
+    categories: list[str],
+) -> None:
+    categories_value = ";".join(categories) + ";" if categories else ""
+    content = (
+        "[Desktop Entry]\n"
+        "Type=Application\n"
+        f"Name={name}\n"
+        f"Comment={comment}\n"
+        f"Exec={exec_cmd}\n"
+        f"Icon={icon_name}\n"
+        "Terminal=false\n"
+        f"Categories={categories_value}\n"
+    )
+    desktop_file.write_text(content, encoding="utf-8")
+
+
+def optional_refresh_caches(applications_dir: Path) -> None:
+    # Update desktop database if available
+    upd_db = shutil.which("update-desktop-database")
+    if upd_db:
+        try:
+            subprocess.run([upd_db, str(applications_dir)], check=False)
+        except Exception:
+            pass
+    # Update icon cache if available (mostly for PNG, but harmless)
+    upd_icon = shutil.which("gtk-update-icon-cache")
+    if upd_icon:
+        try:
+            subprocess.run(
+                [upd_icon, "-q", str(Path.home() / ".local/share/icons/hicolor")],
+                check=False,
+            )
+        except Exception:
+            pass
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description=(
+            "create a user .desktop entry and install an SVG icon under ~/.local/share/icons/hicolor/scalable/apps"
+        )
+    )
+    parser.add_argument("-n", "--name", required=True, help="application display name")
+    parser.add_argument("-c", "--comment", required=True, help="short description")
+    parser.add_argument(
+        "-e", "--exec", dest="exec_cmd", required=True, help="executable command"
+    )
+    parser.add_argument("-i", "--icon", required=True, help="path to svg icon file")
+    parser.add_argument(
+        "-t",
+        "--category",
+        required=True,
+        help="category or categories (comma or semicolon separated)",
+    )
+
+    args = parser.parse_args()
+
+    name: str = args.name
+    comment: str = args.comment
+    exec_cmd: str = args.exec_cmd
+    icon_src = Path(args.icon).expanduser()
+    categories = parse_categories(args.category)
+
+    ensure_svg_icon(icon_src)
+    validate_categories(categories)
+
+    slug = slugify_name(name)
+
+    # Install icon and compute Icon field value (without extension)
+    icon_dest = install_icon(icon_src, slug)
+    icon_field_value = slug
+
+    # Write .desktop file
+    applications_dir = Path.home() / ".local/share/applications"
+    applications_dir.mkdir(parents=True, exist_ok=True)
+    desktop_file = applications_dir / f"{slug}.desktop"
+    write_desktop_entry(
+        desktop_file=desktop_file,
+        name=name,
+        comment=comment,
+        exec_cmd=exec_cmd,
+        icon_name=icon_field_value,
+        categories=categories,
+    )
+
+    # optional_refresh_caches(applications_dir)
+
+    print("Created:")
+    print(f"  Desktop entry: {desktop_file}")
+    print(f"  Icon:         {icon_dest}")
+    print("You may need to log out and back in, or run `update-desktop-database`.")
+
+
+if __name__ == "__main__":
+    main()

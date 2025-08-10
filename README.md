@@ -5,6 +5,7 @@ Just a list of scripts that grants a dev (like me) a happier life.
 ## Table of Contents
 
 - [clj-try](#clj-try)
+- [desktopify](#desktopify)
 - [gpass](#gpass)
 - [lorem](#lorem)
 - [objectid](#objectid)
@@ -28,6 +29,19 @@ user=> (require '[medley.core :as m])
 nil
 user=> (m/find-first even? [1 2 3 4])
 2
+```
+
+### desktopify
+
+Create a user application entry by generating a `.desktop` file under `~/.local/share/applications` and installing an SVG icon under `~/.local/share/icons/hicolor/scalable/apps`.
+
+```
+$ desktopify \
+  --name "My App" \
+  --comment "My favorite tool" \
+  --exec "/usr/bin/my-app --flag" \
+  --icon ~/Pictures/my-app.svg \
+  --category "Utility;TextEditor"
 ```
 
 ### gpass
