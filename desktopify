@@ -3,7 +3,6 @@
 import argparse
 import re
 import shutil
-import subprocess
 from pathlib import Path
 
 
@@ -93,26 +92,6 @@ def write_desktop_entry(
     desktop_file.write_text(content, encoding="utf-8")
 
 
-def optional_refresh_caches(applications_dir: Path) -> None:
-    # Update desktop database if available
-    upd_db = shutil.which("update-desktop-database")
-    if upd_db:
-        try:
-            subprocess.run([upd_db, str(applications_dir)], check=False)
-        except Exception:
-            pass
-    # Update icon cache if available (mostly for PNG, but harmless)
-    upd_icon = shutil.which("gtk-update-icon-cache")
-    if upd_icon:
-        try:
-            subprocess.run(
-                [upd_icon, "-q", str(Path.home() / ".local/share/icons/hicolor")],
-                check=False,
-            )
-        except Exception:
-            pass
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
@@ -161,8 +140,6 @@ def main() -> None:
         icon_name=icon_field_value,
         categories=categories,
     )
-
-    # optional_refresh_caches(applications_dir)
 
     print("Created:")
     print(f"  Desktop entry: {desktop_file}")
