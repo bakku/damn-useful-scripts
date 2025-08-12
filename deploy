@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Copies all executable files from the current directory (recursively),
+# skipping hidden directories (e.g., .git), and ignoring this deploy script
+# itself, into $HOME/bin.
+
+destination_dir="${HOME}/bin"
+mkdir -p "${destination_dir}"
+
+script_basename="$(basename "$0")"
+
+# Find executable files while pruning hidden directories, then install them.
+# -print0/IFS+read handles filenames with spaces or special characters.
+find . \
+  -path '*/.*' -prune -o \
+  -type f -executable -print0 \
+| while IFS= read -r -d '' filepath; do
+  filename="$(basename "${filepath}")"
+  # Skip the deploy script itself
+  if [[ "${filename}" == "${script_basename}" ]]; then
+    continue
+  fi
+  install -m 0755 "${filepath}" "${destination_dir}/${filename}"
+  echo "Installed ${filename} -> ${destination_dir}/${filename}"
+done
+
+echo "Done."
+
+

@@ -2,7 +2,12 @@
 
 Just a list of scripts that grants a dev (like me) a happier life.
 
-## Table of Contents
+## Install all scripts
+
+In order to install all scripts just run the `deploy` script which will copy everything
+into a `$HOME/bin` folder. Make sure to add this folder to your `$PATH`.
+
+## Available scripts
 
 - [clj-try](#clj-try)
 - [desktopify](#desktopify)
@@ -15,7 +20,6 @@ Just a list of scripts that grants a dev (like me) a happier life.
 - [smtptest](#smtptest)
 - [toggl](#toggl)
 - [uptldr](#uptldr)
-- [License](#license)
 
 ### clj-try
 
