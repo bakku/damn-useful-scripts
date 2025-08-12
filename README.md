@@ -14,6 +14,7 @@ Just a list of scripts that grants a dev (like me) a happier life.
 - [shrink](#shrink)
 - [smtptest](#smtptest)
 - [toggl](#toggl)
+- [uptldr](#uptldr)
 - [License](#license)
 
 ### clj-try
@@ -118,6 +119,19 @@ Simple terminal stopwatch that displays an updating `HH:MM:SS` timer. Press Ctrl
 ```
 $ toggl
 ⏰ 00:00:03
+```
+
+### uptldr
+
+Want to know more what your next `sudo apt upgrade` is actually doing? Just run `uptldr` and you'll
+get a concise summary via AI.
+
+```
+$ uptldr
+Kernel: linux-image … (security/bugfixes)
+Libraries: openssl, libc6 minor updates
+Runtimes: nodejs minor update
+Applications: git, curl bugfix releases
 ```
 
 ## License

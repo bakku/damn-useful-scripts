@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Summarize upcoming APT upgrades using the `llm` CLI
+
+if ! command -v llm >/dev/null 2>&1; then
+  echo "Error: 'llm' CLI not found in PATH" >&2
+  exit 1
+fi
+
+SYSTEM_PROMPT='You summarize APT upgrade lists. Input will be the raw output of `apt list --upgradable`. Provide a concise, high-level overview for a developer: group by major components (e.g., kernel, libraries, language runtimes, applications, drivers), call out notable version jumps or likely security/bugfix updates if inferable from names/versions, avoid package-by-package detail unless notable, keep it under about 10 lines. Do NOT use Markdown formatting; respond in plain text suitable for a terminal.'
+
+# Optional model selection via LLM_MODEL env var
+LLM_ARGS=()
+if [[ -n "${LLM_MODEL:-}" ]]; then
+  LLM_ARGS=(-m "$LLM_MODEL")
+fi
+
+# Hide the apt "Listing... Done" header, then stream to llm with a system instruction
+sudo apt list --upgradable 2>/dev/null \
+  | grep -vE '^Listing\.\.\. Done$' \
+  | llm "${LLM_ARGS[@]}" -u --system "$SYSTEM_PROMPT"
+
